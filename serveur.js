@@ -3,14 +3,18 @@ var app = express();
 var bp = require('body-parser');
 var mysql = require('mysql');
 var validator = require('validatorjs');
-var questionnaire = [];
+var question = [];
 
-app.use('/questionnaire', express.static(__dirname + '/public'));
+app.use('/Quiz', express.static(__dirname + '/Public'));
 
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
 
+app.listen(8080, function() 
+{
+	console.log('listening on port 8080!');
+});
 
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -29,28 +33,16 @@ connection.connect(function(err)
 		if (err) throw err
 			for (var i = 0; i < results.length; i++) 
 			{
-				questionnaire.push(results[i]);
-			};
-		});
-});
-
-
-	app.listen(8080, function() 
-	{
-		console.log('listening on port 8080!');
+				question.push(results[i]);
+				//console.log(question);
+			}
 	});
-
-// app.use("/static", express.static(__dirname + "/Public"));
-
-app.get('/', function(req, res)
-{
-	res.send('Hello World');
 });
 
 
 app.get('/Question', function(req, res) {
-	res.json(questionnaire);
-	console.log(questionnaire);
+	res.json(question);
+	//console.log(question);
 });
 
 
